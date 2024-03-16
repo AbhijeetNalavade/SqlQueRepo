@@ -1,0 +1,215 @@
+Find the list of all the schools in the database
+
+Expected Output: School names in ascending order
+
+ans:
+select
+school
+from sat_score
+group by 1
+
+Find the school-wise count of SAT-appearing students
+
+Expected Outcome: School names and count of students column in exact same sequence. The output should be sorted by students count in ascending order
+
+ans:
+select
+school,
+count(student_id)
+from sat_score
+group by 1
+order by 2  
+
+What is the school-wise average score in writing, verbal and math
+
+Expected Outcome: School name, average writing score, average verbal score and average math score. The output should be sorted by average math score in descending order
+
+ans:
+select
+school,
+avg(sat_writing),
+avg(sat_verbal),
+avg(sat_math)
+from sat_score
+group by 1
+order by 4 desc
+
+
+Find out the id of the students who spent the minimum number of hours in studies for every school
+
+Expected Output:  school, student_id, hrs_studied in exact same sequence. The output should be sorted by hrs_studied in descending order
+
+with hr_spend as(
+    select
+    school,
+    student_id,
+    hrs_studied,
+    rank() over (partition by school order by hrs_studied ) as hr_spent
+    from sat_score
+)
+select
+school,
+student_id,
+hrs_studied
+from hr_spend
+where hr_spent = 1
+order by 3 desc
+
+Extract day of the month from date column
+
+Expected output: Date and day of the month in exact same sequence. The output should be sorted by date in descending order
+
+ans:select
+date,
+month
+
+from apple
+order by 1
+
+Extract day of the month from date column
+
+Expected output: Date and day of the month in exact same sequence. The output should be sorted by date in descending order
+
+ans:
+select
+date,
+extract (day from date)
+from apple
+order by 1 desc
+
+What is the monthwise highest volume traded according to the data? 
+
+Expected output: Month_number(in YYYY-MM format) and maximum volume traded in the month. The output should be sorted by month number in ascending order
+
+ans:
+select
+to_char (date,'YYYY-MM'),
+max(volume)
+from apple
+group by 1
+order by 1
+
+What is the highest volume trading date in every month?
+
+Expected Output: month_number(in YYYY-MM format) and maximum volume trading date columns in exact same. The output should be sorted month_number in ascending order
+
+ans:
+with vol_rank as(
+    select
+    to_char (date,'YYYY-MM') as month_data,
+    date,
+    rank() over (partition by to_char (date,'YYYY-MM') order by volume desc ) as volume_rank
+    from apple)
+
+    select
+    month_data,
+    date
+    from vol_rank
+    where volume_rank = 1
+    group by 1,2
+    order by 1 
+
+
+
+
+What are the dates in every month having lowest trade volume based on the date?
+
+Expected Output: Month_number(in YYYY-MM format) and minimum volume trading date columns in exact same. The output should be sorted month_number in ascending order
+
+ans:
+with vol_rank as(
+    select
+    to_char (date,'YYYY-MM') as month_data,
+    date,
+    rank() over (partition by to_char (date,'YYYY-MM') order by volume  ) as volume_rank
+    from apple)
+
+    select
+    month_data,
+    date
+    from vol_rank
+    where volume_rank = 1
+    
+
+Find out list of dates when the opening stock value was less the closing value
+
+Expected Output: Date, Open and close in exact same sequence. The output should be sorted in ascending order of date
+
+ans:
+select
+date,
+open,
+close
+from apple
+where open < close
+
+order by 1
+
+Categorize dates into 'Good',  'Bad' and 'OK'.
+
+Good:  Close value is higher than Open
+
+Bad: Close value is lower than Open
+
+OK: Close value equal to Open
+
+Expected Output: Date and day_status('Good',  'Bad' and 'OK') columns in exact same sequence. Order the output in increasing order of date
+
+ANS:
+select
+date,
+case 
+WHEN close > open then 'Good'
+WHEN close < open then 'Bad'
+WHEN close = open then 'OK' else 'Other'
+END AS day_status
+
+from apple
+
+order by 1 
+
+
+Categorize dates into 'Good',  'Bad' and 'OK'. 
+
+Good:  Close value is higher the Open
+
+Bad: Close value is lower than Open
+
+OK: Close value equal to Open
+
+Find out the average volume traded in newly created date categories
+
+Expect Output: Day_status ('Good', 'Bad', 'OK'), the average volume traded columns in exact same sequence. The output should be sorted by avg volume traded in descending order
+
+ANS:
+with day_status_table as (
+    select
+
+case 
+WHEN close > open then 'Good'
+WHEN close < open then 'Bad'
+WHEN close = open then 'OK' else 'Other'
+END AS day_status,
+volume
+
+from apple)
+
+select
+day_status,
+avg(volume) as avg_trade
+from day_status_table
+group by 1
+order by 2 desc
+
+
+
+
+
+
+
+
+
+
+
+
+

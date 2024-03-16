@@ -1,0 +1,260 @@
+Find workers and their corresponding information from the table with an even number for their worker id. MOD function might be useful for this kind of calculation
+
+Expected Output: All the columns with even worker id numbers. The table should be sorted by worker_id in ascending order
+
+ANS:
+ select
+ *
+ from worker
+ where mod(worker_id , 2) = 0
+ order by 1 asc
+
+Find workers and their corresponding information from the table with an odd number for their worker id.
+
+Expected Output: All the columns with an odd number of worker IDs.
+
+ANS:
+
+select
+*
+from worker
+where mod(worker_id,2) != 0
+
+
+Find the name of the person having the highest salary
+
+Expected Output: Worker's first name and last name along with salary in the exact same sequence.
+
+ANS:
+select
+first_name,
+last_name,
+salary
+from worker
+group by 1,2,3
+order by 3 desc
+limit 1
+
+Find the total salary distributed in every department.
+
+Expected Output: Department and total salary columns in exact same sequence. The table should be sorted by Total salary in descending order
+
+ANS:
+select
+department,
+sum(salary)
+from worker
+group by 1
+order by 2 desc
+
+
+Find names of top 5 highest paid workers along with their salaries
+
+Expected Output: First name, last name and salaries in exact same sequence. The table should be sorted by salary column in descending order
+
+ANS:
+select
+first_name,
+last_name,
+salary
+from worker
+order by 3 desc
+limit 5
+
+Find the number of employees in each department.
+
+Expected Output: Department and count of the worker in exact same order. The output should be sorted by worker count in descending order
+
+ANS:
+select
+department,
+count(worker_id)
+from worker
+group by 1
+order by 2 desc
+
+
+In the worker table, first name and last name are in different columns. Create a column where both first and last names are separated by 'space'. Name the new column as 'full_name'
+
+Expected Output: Full_name column in ascending order
+
+ANS:
+select
+first_name || ' ' || last_name as full_name
+from worker
+order by 1
+
+
+Find the full name of workers whose salaries >= 50000 and <= 100000. Make sure that the column having both first name and last name should be named as 'full_name'
+
+Expected Output: Full Name and Salaries columns. The output should be sorted in descending order of salaries
+ANS:
+select
+first_name ||' '|| last_name as full_name,
+salary
+from worker
+where salary between 50000 and 100000
+order by 2 desc
+
+Find the number of employees working in the Admin department.
+
+Expected Output: Count of employees who are working in the admin department.
+ANS:
+SELECT
+count(worker_id) 
+from worker
+where department = 'Admin'
+
+Find all workers who joined in February 2014.
+
+Expected Output: Extract all the columns with the given conditions, the output should be sorted by worker id in ascending order
+ANS:
+SELECT
+*
+FROM worker
+where 
+extract (year from(cast(joining_date as DATE))) = 2014 and
+extract (month from(cast(joining_date as DATE))) = 2
+
+
+order by worker_id 
+
+Find all workers whose salary lies between 100000 and 500000 (including both the numbers)
+
+Expected Output: All the columns with the given condition. The output should be sorted by ascending order of worker_id
+ANS:
+select
+*
+from worker
+where salary between 100000 and 500000
+order by worker_id 
+
+Find all workers whose salary lies between 100000 and 500000 (excluding both the numbers)
+
+Expected Output: All the columns with the given condition. The output should be sorted by ascending order of worker_id
+
+ans:
+select
+*
+from worker
+where salary > 100000 AND salary < 500000
+order by worker_id 
+
+Find all workers whose first name ends with the letter 'h'.
+
+Expected Output: First Name columns only. The output should be sorted by first name in ascending order
+
+ans:
+
+select
+first_name
+from worker
+where first_name like '%h'
+order by 1 asc
+
+Find all workers whose first name ends with the letter 'a'.
+
+Expected Output: First Name columns only. The output should be sorted by the first name in ascending order
+
+ans:
+select
+first_name
+from worker
+where first_name like '%a'
+order by 1 
+
+Find all workers that work in the Admin department.
+
+Expected Output: All the columns. The output should be sorted by worker id in ascending order
+ans:
+select
+*
+from worker
+where department = 'Admin'
+order by worker_id asc
+
+
+Find details of workers excluding those with the first name 'Vipul' or 'Satish'
+
+Expected Output: First Name, Last Name, salaries and department columns in the exact same sequence. The output should be sorted by first name in ascending order
+
+ans:
+select
+first_name,
+last_name,
+salary,
+department
+from worker
+where first_name not in ('Vipul', 'Satish')
+group by 1,2,3,4
+order by 1 
+
+Find details of workers with the first name of either 'Vipul' or 'Satish'
+
+Expected Output: First Name, Last Name, salaries and department columns.
+ans:
+select
+first_name,
+last_name,
+salary,
+department
+from worker
+where first_name in ('Vipul','Satish')
+
+Sort workers in ascending order by the first name and in descending order by department name.
+
+Expected Output: All the columns.
+ans:
+select
+*
+from worker
+order by first_name , department desc
+
+.
+
+Replace the letter 'a' with 'A' in the first name.
+
+Expected Output: Worker's First Name Column, order output in ascending order of first name
+
+ans:
+select
+replace(first_name,'a','A')
+from worker
+order by 1 
+
+Print the first three characters of the first name.
+
+Expected Output: First Name column only. Sort the output by first_name in ascending order
+ans:
+select
+ left(first_name,3)
+from worker
+order by 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
